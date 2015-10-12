@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <div data-ng-controller="BooksController as books">
+        <h1>Hello World {{books.appName}} ({{books.appDesc}})!</h1>
+    </div>
+
+    <script src="components/angular/angular.js" ></script>
+    <script src="components/angular-mocks/angular-mocks.js" ></script>
+
+    <script src="app/app.js" ></script>
+    <script src="app/books/BooksController.js" ></script>
+</body>
+</html>
