@@ -7,7 +7,14 @@
 <body>
 
     <div data-ng-controller="BooksController as books">
-        <h1>Hello World {{books.appName}} ({{books.appDesc}})!</h1>
+        <h1>Hello World {{books.appName}} ({{books.appDesc}}) 123!</h1>
+
+        <h3>All Books</h3>
+        <div>
+            <ul>
+                <li data-ng-repeat="book in books.allBooks">{{book.title}} - {{book.author}}</li>
+            </ul>
+        </div>
     </div>
 
     <script src="components/angular/angular.js" ></script>
@@ -15,5 +22,6 @@
 
     <script src="app/app.js" ></script>
     <script src="app/books/BooksController.js" ></script>
+    <script src="app/services/dataService.js" ></script>
 </body>
 </html>
