@@ -3,10 +3,10 @@
 
     var app = angular.module("app", []);
 
-    app.provider("books", booksProvider);
+    app.provider("books", ["constants", booksProvider]);
 
     //This constructs the book provider
-    function booksProvider(){
+    function booksProvider(constants){
 
         //configuration values; set in configuration phase and used when $get is called.
         var includeVersionInAppName = false;
@@ -17,9 +17,9 @@
         //the function used to create the service
         this.$get = function(){
 
-            var appName = "Book Logger";
-            var appVersion = "1.0";
-            var appDesc = "Track which books you read.";
+            var appName = constants.APP_TITLE;
+            var appVersion = constants.APP_VERSION;
+            var appDesc = constants.APP_DESCRIPTION;
 
             return {
                 appName : appName + (includeVersionInAppName ? " " + appVersion: ""),
@@ -29,10 +29,11 @@
 
     }
 
-    app.config(["booksProvider", configApp]);
+    app.config(["booksProvider", "constants", configApp]);
 
-    function configApp(booksProvider){
+    function configApp(booksProvider, constants){
+        console.log("Configuring " + constants.APP_TITLE);
         booksProvider.setIncludeVersionInAppName(true);
-
     }
+
 }());
