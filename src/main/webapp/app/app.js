@@ -29,11 +29,14 @@
 
     }
 
-    app.config(["booksProvider", "constants", configApp]);
+    app.config(["booksProvider", "constants", "dataServiceProvider", configApp]);
 
-    function configApp(booksProvider, constants){
+    function configApp(booksProvider, constants, dataServiceProvider){
         console.log("Configuring " + constants.APP_TITLE);
         booksProvider.setIncludeVersionInAppName(true);
+
+        console.log("at config phase all providers are ready for access:")
+        console.log(dataServiceProvider.$get);
     }
 
 }());
