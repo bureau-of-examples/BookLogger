@@ -1,9 +1,9 @@
 (function(){
     "use strict";
 
-    angular.module("app").controller("BooksController", ["books", "dataService", BooksController]);
+    angular.module("app").controller("BooksController", ["books", "dataService", "logger", BooksController]);
 
-    function BooksController(books, dataService){
+    function BooksController(books, dataService, logger){
 
         var vm = this;
 
@@ -12,6 +12,7 @@
 
         vm.allBooks = dataService.getAllBooks();
 
+        logger.output("BooksController has been created.");
     }
 
 }());
