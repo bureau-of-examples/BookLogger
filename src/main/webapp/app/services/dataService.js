@@ -3,26 +3,7 @@
 
     angular.module("app").factory("dataService", dataServiceFactory);
 
-    var booksArray = [
-        {
-            book_id: 1,
-            title: "Harry Potter and the Deathly Hallows",
-            author: "J.K Rowling",
-            year_published: 2000
-        },
-        {
-            book_id: 2,
-            title: "The Cat in the Hat",
-            author: "Dr. Seuss",
-            year_published: 1957
-        },
-        {
-            book_id: 3,
-            title: "Encyclopedia Brown, Boy Detective",
-            author: "Donald J. Sobol",
-            year_published: 1963
-        }
-    ];
+
 
     var readersArray = [
         {
@@ -46,11 +27,12 @@
 
     ];
 
-    function dataServiceFactory(logger, $q, $timeout) {
+    function dataServiceFactory(logger, $q, $timeout, $http) {
 
         logger.output("Creating the dataService instance.");
 
         var getAllBooksCount = 0;
+        var getAllReadersCount = 0;
 
         return {
             getAllBooks: getAllBooks,
@@ -62,15 +44,18 @@
             logger.output("Getting all books.");
             var deferred = $q.defer();
             $timeout(function(){
-                if(getAllBooksCount % 4 == 3){
+                if(getAllBooksCount++ % 4 == 3){
                     deferred.reject("Error retrieving books.");
                 } else {
                     deferred.notify("Please wait patiently....");
                     $timeout(function(){
-                        deferred.resolve(booksArray);
+                        $http.get("/books").then(function(result){
+                            deferred.resolve(result["data"]);
+                        }).catch(function(error){
+                            deferred.reject(error);
+                        });
                     }, 1000);
                 }
-                getAllBooksCount++;
             }, 1000);
 
             return deferred.promise;
@@ -81,12 +66,16 @@
             logger.output("Getting all readers.");
             var deferred = $q.defer();
             $timeout(function(){
-                deferred.resolve(readersArray);
+                if(getAllReadersCount++ % 4 == 3){
+                    deferred.reject("Error retrieving readers.");
+                } else {
+                    deferred.resolve(readersArray);
+                }
             }, 1000);
 
             return deferred.promise;
         }
     }
 
-    dataServiceFactory.$inject = ["logger", "$q", "$timeout"];
+    dataServiceFactory.$inject = ["logger", "$q", "$timeout", "$http"];
 }());

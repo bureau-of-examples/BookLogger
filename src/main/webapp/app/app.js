@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var app = angular.module("app", []);
+    var app = angular.module("app", ["ngRoute", "httpMock"]);
 
     app.provider("books", ["constants", booksProvider]);
 
@@ -31,12 +31,26 @@
 
     app.config(["booksProvider", "constants", "dataServiceProvider", configApp]);
 
+    app.config(["$routeProvider", configRoute]);
+
     function configApp(booksProvider, constants, dataServiceProvider){
         console.log("Configuring " + constants.APP_TITLE);
         booksProvider.setIncludeVersionInAppName(true);
 
         console.log("at config phase all providers are ready for access:")
         console.log(dataServiceProvider.$get);
+    }
+
+    function configRoute($routeProvider) {
+        $routeProvider
+            .when("/", {
+                templateUrl: "/app/books/books.html",
+                controller: "BooksController as vm"
+            })
+            .when("/addBook", {
+                templateUrl: "app/books/addBook.html",
+                controller: "AddBookController as vm"
+            }).otherwise("/");
     }
 
 }());

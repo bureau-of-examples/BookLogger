@@ -2,35 +2,33 @@
 <html lang="en" data-ng-app="app">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css" />
+    <title>Book Logger Demo App</title>
 </head>
 <body>
 
-    <div data-ng-controller="BooksController as books">
-        <h1>Hello World {{books.appName}} ({{books.appDesc}}) 123!</h1>
+    <div class="container">
+        <div data-ng-controller="AppController as books">
+            <h1>Hello World {{books.appName}} ({{books.appDesc}}) 123!</h1>
+            <div class="btn-group" role="group" aria-label="...">
+                <a href="#/" class="btn btn-default">Main page</a>
+                <a href="#/addBook" class="btn btn-default">Add a new Book</a>
+            </div>
+            <hr>
 
-        <h3>All Books</h3>
-        <div>
-            <ul>
-                <li data-ng-repeat="book in books.allBooks">{{book.title}} - {{book.author}}</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <h3>All Readers</h3>
-        <div>
-            <ul>
-                <li data-ng-repeat="reader in books.allReaders">{{reader.name}} - {{books.getBadge(reader.totalMinutesRead)}}</li>
-            </ul>
+            <ng-view>
+            </ng-view>
         </div>
     </div>
-
     <script src="components/angular/angular.js" ></script>
+    <script src="components/angular-route/angular-route.js" ></script>
     <script src="components/angular-mocks/angular-mocks.js" ></script>
 
     <script src="app/app.js" ></script>
+    <script src="app/httpMock.js" ></script>
+    <script src="app/AppController.js" ></script>
     <script src="app/books/BooksController.js" ></script>
+    <script src="app/books/AddBookController.js" ></script>
     <script src="app/services/dataService.js" ></script>
     <script src="app/services/loggerService.js" ></script>
     <script src="app/services/constantService.js" ></script>

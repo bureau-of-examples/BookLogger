@@ -1,14 +1,12 @@
 (function(){
     "use strict";
 
-    angular.module("app").controller("BooksController", ["books", "dataService", "logger", "badgeService", BooksController]);
+    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", BooksController]);
 
-    function BooksController(books, dataService, logger, badgeService){
+    function BooksController(dataService, logger, badgeService){
 
         var vm = this;
 
-        vm.appName  = books.appName;
-        vm.appDesc = books.appDesc;
         vm.allBooks = [];
 
         dataService.getAllBooks().then(getBooksSuccess, getBooksError, getBooksNotification);
@@ -25,10 +23,10 @@
             logger.output(message);
         }
 
-        dataService.getAllReaders().then(getReadersSuccess).catch(getReadersError).finally(getAllReadersComplete);;//catch handler can also handle exceptions thrown from the success handler.
+        dataService.getAllReaders().then(getReadersSuccess).catch(getReadersError).finally(getAllReadersComplete);//catch handler can also handle exceptions thrown from the success handler.
 
         function getReadersSuccess(array) {
-            if(Math.random() * 100 >= 50) {
+            if(Math.random() * 100 >= 1) {
                 vm.allReaders = array;
             } else {
                 throw "An exception occurred while displaying all readers.";
