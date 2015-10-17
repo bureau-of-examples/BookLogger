@@ -3,8 +3,6 @@
 
     angular.module("app").factory("dataService", dataServiceFactory);
 
-
-
     var readersArray = [
         {
             reader_id: 1,
@@ -36,8 +34,19 @@
 
         return {
             getAllBooks: getAllBooks,
-            getAllReaders: getAllReaders
+            getAllReaders: getAllReaders,
+            getBook: getBook,
+            addBook: addBook,
+            reportError: reportError
         };
+
+        function reportError(obj){
+            if(obj["status"]){
+                alert("Generic server error.");
+            } else {
+                alert(obj);
+            }
+        }
 
         function getAllBooks() {
 
@@ -74,6 +83,16 @@
             }, 1000);
 
             return deferred.promise;
+        }
+
+        function getBook(bookId){
+
+            return $http.get("/books", {params: {bookId : bookId}});
+        }
+
+        function addBook(book){
+
+            return $http.post("/books/add", book);
         }
     }
 

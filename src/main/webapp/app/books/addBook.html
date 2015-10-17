@@ -2,31 +2,41 @@
 
 <h3>Add a new book</h3>
 
-<form class="form-horizontal" role="form">
-    <div class="form-group">
+<form name="bookForm" class="form-horizontal" role="form">
+
+    <div class="form-group" data-ng-class="{'has-error': bookForm.bookTitle.$invalid && bookForm.bookTitle.$dirty}">
         <label for="bookTitle" class="col-sm-1 control-label" >Title</label>
         <div class="col-sm-4">
-            <input id="bookTitle" type="text" class="form-control" placeholder="Title">
+            <input id="bookTitle" name="bookTitle" type="text" class="form-control" placeholder="Title" data-ng-model="vm.book.title" data-ng-required="true">
+        </div>
+        <div class="col-sm-1">
+            <span class="required-hint" title="This field is required">*</span>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-ng-class="{'has-error': bookForm.bookAuthor.$invalid && bookForm.bookAuthor.$dirty}">
         <label for="bookAuthor" class="col-sm-1 control-label" >Author</label>
         <div class="col-sm-4">
-            <input id="bookAuthor" type="text" class="form-control" placeholder="Author">
+            <input id="bookAuthor" name="bookAuthor" type="text" class="form-control" placeholder="Author" data-ng-model="vm.book.author"  data-ng-required="true">
+        </div>
+        <div class="col-sm-1">
+            <span class="required-hint" title="This field is required">*</span>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-ng-class="{'has-error': bookForm.bookPublished.$invalid && bookForm.bookPublished.$dirty}">
         <label for="bookPublished" class="col-sm-1 control-label" >Year</label>
         <div class="col-sm-4">
-            <input id="bookPublished" type="text" class="form-control" placeholder="Year">
+            <input id="bookPublished" name="bookPublished" type="text" class="form-control" placeholder="yyyy" data-ng-model="vm.book.year_published"  data-ng-required="true" data-ng-pattern="/^[0-9]{4,4}$/">
+        </div>
+        <div class="col-sm-1">
+            <span class="required-hint" title="This field is required">*</span>
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-4">
-            <button class="btn btn-primary" type="button" >Save</button>
+            <button class="btn btn-primary" type="button" data-ng-disabled="bookForm.$invalid" data-ng-click="vm.addBook(vm.book)" >Save</button>
         </div>
     </div>
 

@@ -3,6 +3,7 @@
 
     angular.module("httpMock", ["ngMockE2E"]).run(["$httpBackend", mockHttpResponses]);
 
+
     var booksArray = [
         {
             book_id: 1,
@@ -24,6 +25,8 @@
         }
     ];
 
+    var nextBookId = 4;
+
     function mockHttpResponses($httpBackend) {
 
         if(!$httpBackend)
@@ -39,6 +42,20 @@
             }
 
             return response;
+        });
+
+        $httpBackend.whenPOST("/books/add").respond(function(method, url, data){
+            var response = {status:"Error"};
+            var code = 400;
+            data = angular.fromJson(data);
+            if(data && data["title"]){
+                data.book_id = nextBookId++;
+                booksArray.push(data);
+                response.status = "Ok";
+                code = 200;
+            }
+
+            return [code, response];
         });
 
         $httpBackend.whenGET(/app/).passThrough();

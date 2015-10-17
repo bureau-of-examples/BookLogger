@@ -1,0 +1,8 @@
+
+span.required-hint {
+    font-size:larger;
+    position: relative;
+    top:5px;
+    left: -5px;
+    cursor: pointer;
+}

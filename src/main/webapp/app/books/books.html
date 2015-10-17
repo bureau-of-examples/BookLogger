@@ -3,7 +3,7 @@
         <h3>All Books</h3>
         <div>
             <ul>
-                <li data-ng-repeat="book in vm.allBooks">{{book.title}} - {{book.author}}</li>
+                <li data-ng-repeat="book in vm.allBooks">{{book.title}} - {{book.author}} <a href="#/editBook/{{book.book_id}}">Edit</a></li>
             </ul>
         </div>
 

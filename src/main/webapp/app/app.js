@@ -50,6 +50,15 @@
             .when("/addBook", {
                 templateUrl: "app/books/addBook.html",
                 controller: "AddBookController as vm"
+            })
+            .when("/editBook/:bookId", {
+                templateUrl: "app/books/addBook.html",
+                controller: "EditBookController as vm",
+                resolve: {
+                    book : ["$stateParams,dataService", function($stateParams, dataService){
+                        return dataService.getBook($stateParams["bookId"]);
+                    }]
+                }
             }).otherwise("/");
     }
 
