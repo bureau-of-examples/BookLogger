@@ -37,6 +37,9 @@
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-4">
             <button class="btn btn-primary" type="button" data-ng-disabled="bookForm.$invalid || !bookForm.$dirty" data-ng-click="vm.addBook ? vm.addBook(vm.book) : vm.saveBook(vm.book)" >Save</button>
+
+            <button class="btn btn-default" data-ng-show="vm.setAsFavorite" data-ng-click="vm.setAsFavorite()">Set As Favorite</button>
+
         </div>
     </div>
 

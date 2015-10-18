@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var app = angular.module("app", ["ngRoute", "httpMock"]);
+    var app = angular.module("app", ["ngRoute", "ngCookies", "httpMock"]);
 
     app.provider("books", ["constants", booksProvider]);
 

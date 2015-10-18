@@ -3,20 +3,26 @@
 
     angular.module("app").controller("EditBookController", editBookController);
 
-    function editBookController(book, dataService, $location) {
+    function editBookController(book, dataService, $location, $cookies, $cookieStore) {
         var vm = this;
 
         vm.book = book.data;
 
-        vm.saveBook = function(book){
-            dataService.saveBook(book).then(function(){
+        vm.saveBook = function (book) {
+            dataService.saveBook(book).then(function () {
                 $location.url("/");
-            }).catch(function(reason){
+            }).catch(function (reason) {
                 dataService.reportError(reason);
             });
         };
+
+        vm.setAsFavorite = function () {
+            $cookies.put("favoriteBook", vm.book.title);
+        };
+
+        $cookieStore.put("lastEdited", vm.book);
     }
 
-    editBookController.$inject = ["book", "dataService", "$location"];
+    editBookController.$inject = ["book", "dataService", "$location", "$cookies", "$cookieStore"];
 
 }());

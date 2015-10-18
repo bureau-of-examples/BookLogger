@@ -14,15 +14,20 @@
             <div class="btn-group" role="group" aria-label="...">
                 <a href="#/" class="btn btn-default">Main page</a>
                 <a href="#/addBook" class="btn btn-default">Add a new Book</a>
+                <a href="#/editBook/{{books.lastEdited.book_id}}" class="btn btn-default">Edit last edited</a>
             </div>
             <hr>
 
             <ng-view>
             </ng-view>
+
+            <hr>
+            <h3>Current favorite book is: {{books.favoriteBook}}</h3>
         </div>
     </div>
     <script src="components/angular/angular.js" ></script>
     <script src="components/angular-route/angular-route.js" ></script>
+    <script src="components/angular-cookies/angular-cookies.js" ></script>
     <script src="components/angular-mocks/angular-mocks.js" ></script>
 
     <script src="app/app.js" ></script>

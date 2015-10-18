@@ -45,7 +45,6 @@
             return badgeService.retrieveBadge(minutesRead);
         };
 
-
         logger.output("BooksController has been created.");
     }
 
