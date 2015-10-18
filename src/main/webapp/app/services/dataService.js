@@ -88,7 +88,10 @@
 
         function getBook(bookId){
 
-            return $http.get("/books/" + bookId);
+            return $http.get("/books/" + bookId)
+                .then(function(response){
+                    return response.data;
+                });
         }
 
         function addBook(book){

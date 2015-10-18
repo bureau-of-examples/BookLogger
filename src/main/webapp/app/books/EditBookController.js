@@ -6,7 +6,7 @@
     function editBookController(book, dataService, $location, $cookies, $cookieStore) {
         var vm = this;
 
-        vm.book = book.data;
+        vm.book = book;
 
         vm.saveBook = function (book) {
             dataService.saveBook(book).then(function () {

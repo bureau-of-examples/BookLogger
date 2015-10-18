@@ -1,17 +1,28 @@
 (function(){
     "use strict";
 
-    angular.module("app").controller("AppController", ["books", "$cookies", "$cookieStore", appController]);
+    angular.module("app").controller("AppController", ["books", "$cookies", "$cookieStore", "$scope", appController]);
 
-    function appController(books, $cookies, $cookieStore){
+    function appController(books, $cookies, $cookieStore, $scope){
 
         var vm = this;
 
         vm.appName  = books.appName;
         vm.appDesc = books.appDesc;
 
-        vm.favoriteBook = $cookies.get("favoriteBook");
-        vm.lastEdited = $cookieStore.get("lastEdited");
+        $scope.$watch(function(){
+            return $cookies.get("favoriteBook");
+        },function(newValue){
+            vm.favoriteBook = newValue;
+        });
+
+        $scope.$watch(function(){
+            return $cookieStore.get("lastEdited")["book_id"];
+        }, function(newValue){
+            vm.lastEdited = newValue;
+        });
+
+
     }
 
 }());
