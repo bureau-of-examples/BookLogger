@@ -76,7 +76,7 @@
             logger.output("Getting all readers.");
             var deferred = $q.defer();
             $timeout(function(){
-                if(getAllReadersCount++ % 4 == 3){
+                if(getAllReadersCount++ % 5 == 4){
                     deferred.reject("Error retrieving readers.");
                 } else {
                     deferred.resolve(readersArray);

@@ -16,7 +16,7 @@
         }
 
         function getBooksError(errorMessage){
-            logger.output(errorMessage);
+            alert(errorMessage);
         }
 
         function getBooksNotification(message){
