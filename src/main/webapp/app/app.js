@@ -63,13 +63,18 @@
             }).otherwise("/");
     }
 
-    app.run(["$rootScope", "$log", handleRouteError]);
+    app.run(["$rootScope", "logger", handleRouteError]);
 
-    function handleRouteError($rootScope, $log){
+    function handleRouteError($rootScope, logger){
+
+        $rootScope.$on("$routeChangeSuccess", function(event, current, previous){
+            logger.output("Route changed to:");
+            logger.output(angular.toJson(current));
+        });
 
         $rootScope.$on("$routeChangeError", function(event, current, previous, rejection){
-            $log.output("An routing error has occurred:");
-            $log.output(rejection);
+            logger.output("An routing error has occurred:");
+            logger.output(angular.toJson(rejection));
         });
     }
 }());
