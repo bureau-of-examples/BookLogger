@@ -37,6 +37,7 @@
             getAllReaders: getAllReaders,
             getBook: getBook,
             addBook: addBook,
+            saveBook: saveBook,
             reportError: reportError
         };
 
@@ -87,12 +88,16 @@
 
         function getBook(bookId){
 
-            return $http.get("/books", {params: {bookId : bookId}});
+            return $http.get("/books/" + bookId);
         }
 
         function addBook(book){
 
             return $http.post("/books/add", book);
+        }
+
+        function saveBook(book){
+            return $http.post("/books/save", book);
         }
     }
 

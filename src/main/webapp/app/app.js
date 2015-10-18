@@ -55,11 +55,21 @@
                 templateUrl: "app/books/addBook.html",
                 controller: "EditBookController as vm",
                 resolve: {
-                    book : ["$stateParams,dataService", function($stateParams, dataService){
-                        return dataService.getBook($stateParams["bookId"]);
+                    book : ["$route","dataService", function($route, dataService){
+                        var bookId = $route.current.params["bookId"];
+                        return dataService.getBook(bookId);
                     }]
                 }
             }).otherwise("/");
     }
 
+    app.run(["$rootScope", "$log", handleRouteError]);
+
+    function handleRouteError($rootScope, $log){
+
+        $rootScope.$on("$routeChangeError", function(event, current, previous, rejection){
+            $log.output("An routing error has occurred:");
+            $log.output(rejection);
+        });
+    }
 }());

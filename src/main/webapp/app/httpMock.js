@@ -32,16 +32,39 @@
         if(!$httpBackend)
             return;
 
-        $httpBackend.whenGET("/books").respond(booksArray);
+        var getRegex = new RegExp("/books/[0-9]+");
+        $httpBackend.whenGET(getRegex).respond(function(method, url){
 
-        $httpBackend.whenPOST("book/save").respond(function(method, url, data){
-            var response = {status:"Error"};
-            if(data && data["title"]){
-                booksArray.push(data);
-                response.status = "Ok";
+            var idIndex = url.lastIndexOf("/") + 1;
+            var bookId = parseInt(url.substring(idIndex));
+            for(var i=0; i< booksArray.length; i++){
+
+                if(booksArray[i].book_id == bookId){
+                    return [200, booksArray[i]];
+                }
             }
 
-            return response;
+            return [400, {status: "Error"}];
+        });
+
+        $httpBackend.whenGET("/books").respond(booksArray);
+
+        $httpBackend.whenPOST("/books/save").respond(function(method, url, data){
+            var response = {status:"Error"};
+            var code = 400;
+            data = angular.fromJson(data);
+            if(data && data["book_id"]){
+                for(var i=0; i<booksArray.length; i++) {
+                    if(booksArray[i].book_id == data["book_id"]){
+                        booksArray[i] = data;
+                        break
+                    }
+                }
+                response.status = "Ok";
+                code = 200;
+            }
+
+            return [code,  response];
         });
 
         $httpBackend.whenPOST("/books/add").respond(function(method, url, data){
