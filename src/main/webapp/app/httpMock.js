@@ -81,6 +81,19 @@
             return [code, response];
         });
 
+        $httpBackend.whenPOST("/books/delete").respond(function(method, url, data){
+
+            for(var i=0; i<booksArray.length; i++){
+                if(booksArray[i].book_id == data){
+                    booksArray.splice(i, 1);
+                    return [200, {status: "Ok"}];
+                }
+            }
+
+            return [400, {status: "Error"}];
+
+        });
+
         $httpBackend.whenGET(/app/).passThrough();
     }
 }());

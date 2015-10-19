@@ -2,8 +2,8 @@
     <div class="panel-body">
         <h3>All Books (programmed to fail every 4 requests)</h3>
         <div>
-            <ul>
-                <li data-ng-repeat="book in vm.allBooks">{{book.title}} - {{book.author}} <a href="#/editBook/{{book.book_id}}">Edit</a></li>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success" data-ng-repeat="book in vm.allBooks">{{book.title}} - {{book.author}} <a href="#/editBook/{{book.book_id}}">Edit</a> | <a href="javascript:void(0)" data-ng-click="vm.deleteBook(book.book_id)">Delete</a></li>
             </ul>
         </div>
 
@@ -11,8 +11,8 @@
 
         <h3>All Readers (programmed to fail every 5 requests)</h3>
         <div>
-            <ul>
-                <li data-ng-repeat="reader in vm.allReaders">{{reader.name}} - {{vm.getBadge(reader.totalMinutesRead)}}</li>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info" data-ng-repeat="reader in vm.allReaders">{{reader.name}} - {{vm.getBadge(reader.totalMinutesRead)}}</li>
             </ul>
         </div>
 

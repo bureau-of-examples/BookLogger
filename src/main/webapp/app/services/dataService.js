@@ -38,6 +38,7 @@
             getBook: getBook,
             addBook: addBook,
             saveBook: saveBook,
+            deleteBook: deleteBook,
             reportError: reportError
         };
 
@@ -95,12 +96,15 @@
         }
 
         function addBook(book){
-
             return $http.post("/books/add", book);
         }
 
         function saveBook(book){
             return $http.post("/books/save", book);
+        }
+
+        function deleteBook(bookId) {
+            return $http.post("/books/delete", bookId);
         }
     }
 
