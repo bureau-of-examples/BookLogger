@@ -25,6 +25,28 @@
         }
     ];
 
+    var readersArray = [
+        {
+            reader_id: 1,
+            name: "Marie",
+            weeklyReadingGoal: 315,
+            totalMinutesRead: 5600
+        },
+        {
+            reader_id: 2,
+            name: "Daniel",
+            weeklyReadingGoal: 210,
+            totalMinutesRead: 3000
+        },
+        {
+            reader_id: 3,
+            name: "Lanier",
+            weeklyReadingGoal: 140,
+            totalMinutesRead: 600
+        }
+
+    ];
+
     var nextBookId = 4;
 
     function mockHttpResponses($httpBackend) {
@@ -48,6 +70,8 @@
         });
 
         $httpBackend.whenGET("/books").respond(booksArray);
+
+        $httpBackend.whenGET("/readers").respond(readersArray);
 
         $httpBackend.whenPOST("/books/save").respond(function(method, url, data){
             var response = {status:"Error"};

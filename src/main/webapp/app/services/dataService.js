@@ -3,28 +3,6 @@
 
     angular.module("app").factory("dataService", dataServiceFactory);
 
-    var readersArray = [
-        {
-            reader_id: 1,
-            name: "Marie",
-            weeklyReadingGoal: 315,
-            totalMinutesRead: 5600
-        },
-        {
-            reader_id: 2,
-            name: "Daniel",
-            weeklyReadingGoal: 210,
-            totalMinutesRead: 3000
-        },
-        {
-            reader_id: 3,
-            name: "Lanier",
-            weeklyReadingGoal: 140,
-            totalMinutesRead: 600
-        }
-
-    ];
-
     function dataServiceFactory(logger, $q, $timeout, $http) {
 
         logger.output("Creating the dataService instance.");
@@ -80,7 +58,11 @@
                 if(getAllReadersCount++ % 5 == 4){
                     deferred.reject("Error retrieving readers.");
                 } else {
-                    deferred.resolve(readersArray);
+                    $http.get("/readers").then(function(result){
+                        deferred.resolve(result["data"]);
+                    }).catch(function(error){
+                        deferred.reject(error);
+                    });
                 }
             }, 1000);
 
