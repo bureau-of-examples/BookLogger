@@ -58,7 +58,15 @@
                 if(getAllReadersCount++ % 5 == 4){
                     deferred.reject("Error retrieving readers.");
                 } else {
-                    $http.get("/readers").then(function(result){
+                    $http.get("/readers", {
+                        transformResponse : function(data, headers){
+                            var result = angular.fromJson(data);
+                            for(var i=0; i<result.length; i++){
+                                result[i].dateDownloaded = new Date();
+                            }
+                            return result;
+                        }
+                    }).then(function(result){
                         deferred.resolve(result["data"]);
                     }).catch(function(error){
                         deferred.reject(error);
@@ -78,7 +86,12 @@
         }
 
         function addBook(book){
-            return $http.post("/books/add", book);
+            return $http.post("/books/add", book, {
+                transformRequest: function(data, headers){
+                    data.dateUploaded = new Date();
+                    return angular.toJson(data);
+                }
+            });
         }
 
         function saveBook(book){
