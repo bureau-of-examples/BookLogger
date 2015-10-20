@@ -17,7 +17,12 @@
         });
 
         $scope.$watch(function(){
-            return $cookieStore.get("lastEdited")["book_id"];
+            var lastEdited = $cookieStore.get("lastEdited");
+            if(lastEdited){
+                return lastEdited["book_id"];
+            }
+            return null;
+
         }, function(newValue){
             vm.lastEdited = newValue;
         });

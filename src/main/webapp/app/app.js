@@ -29,13 +29,15 @@
 
     }
 
-    app.config(["booksProvider", "constants", "dataServiceProvider", configApp]);
+    app.config(["booksProvider", "constants", "dataServiceProvider", "$httpProvider", configApp]);
 
     app.config(["$routeProvider", configRoute]);
 
-    function configApp(booksProvider, constants, dataServiceProvider){
+    function configApp(booksProvider, constants, dataServiceProvider, $httpProvider){
         console.log("Configuring " + constants.APP_TITLE);
         booksProvider.setIncludeVersionInAppName(true);
+
+        $httpProvider.interceptors.push("bookLoggerInterceptor");
 
         console.log("at config phase all providers are ready for access:")
         console.log(dataServiceProvider.$get);
