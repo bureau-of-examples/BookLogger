@@ -73,6 +73,21 @@
 
         $httpBackend.whenGET("/readers").respond(readersArray);
 
+        var getReadersRegex = new RegExp("/readers/[0-9]+");
+        $httpBackend.whenGET(getReadersRegex).respond(function(method, url){
+
+            var idIndex = url.lastIndexOf("/") + 1;
+            var readerId = parseInt(url.substring(idIndex));
+            for(var i=0; i< readersArray.length; i++){
+
+                if(readersArray[i].reader_id == readerId){
+                    return [200, readersArray[i]];
+                }
+            }
+
+            return [400, {status: "Error"}];
+        });
+
         $httpBackend.whenPOST("/books/save").respond(function(method, url, data){
             var response = {status:"Error"};
             var code = 400;

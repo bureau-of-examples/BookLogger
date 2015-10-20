@@ -12,7 +12,7 @@
         <h3>All Readers (programmed to fail every 5 requests)</h3>
         <div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-info" data-ng-repeat="reader in vm.allReaders">{{reader.name}} - {{vm.getBadge(reader.totalMinutesRead)}} | Date download: {{reader.dateDownloaded}}</li>
+                <li class="list-group-item list-group-item-info" data-ng-repeat="reader in vm.allReaders"><a href="#/readerDetails/{{reader.reader_id}}">{{reader.name}}</a> - {{vm.getBadge(reader.totalMinutesRead)}} | Date download: {{reader.dateDownloaded}}</li>
             </ul>
         </div>
 

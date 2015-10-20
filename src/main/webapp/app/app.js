@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var app = angular.module("app", ["ngRoute", "ngCookies", "httpMock"]);
+    var app = angular.module("app", ["ngRoute", "ngCookies", "ngResource", "httpMock"]);
 
     app.provider("books", ["constants", booksProvider]);
 
@@ -62,7 +62,12 @@
                         return dataService.getBook(bookId);
                     }]
                 }
-            }).otherwise("/");
+            })
+            .when("/readerDetails/:readerId", {
+                templateUrl: "app/readers/readerDetails.html",
+                controller: "readerDetailsController as vm"
+            })
+            .otherwise("/");
     }
 
     app.run(["$rootScope", "logger", handleRouteError]);
