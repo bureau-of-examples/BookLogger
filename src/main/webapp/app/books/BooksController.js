@@ -1,9 +1,9 @@
 (function () {
     "use strict";
 
-    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", "$scope", BooksController]);
+    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", "$scope", "$route", BooksController]);
 
-    function BooksController(dataService, logger, badgeService, $scope) {
+    function BooksController(dataService, logger, badgeService, $scope, $route) {
 
         var vm = this;
 
@@ -13,6 +13,7 @@
 
         function getBooksSuccess(array) {
             vm.allBooks = array;
+
         }
 
         function getBooksError(errorMessage) {
@@ -27,7 +28,9 @@
 
         dataService.getUserSummary().then(function(result){
             vm.summaryData = result;
-            $scope.$digest();
+            if ($scope.$root.$$phase != '$digest') {
+                $scope.$digest();
+            }
         });
 
         function getReadersSuccess(array) {
@@ -55,7 +58,8 @@
             dataService.deleteBook(bookId)
                 .then(function(){
                     dataService.invalidateUserSummaryCache();
-                    return dataService.getAllBooks().then(getBooksSuccess, getBooksError, getBooksNotification);
+                    dataService.invalidateBooksHttpCache();
+                    $route.reload();
                 })
                 .catch(function(reason){
                     alert(reason);

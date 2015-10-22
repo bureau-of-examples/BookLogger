@@ -19,7 +19,8 @@
             deleteBook: deleteBook,
             reportError: reportError,
             getUserSummary: getUserSummary,
-            invalidateUserSummaryCache: invalidateUserSummaryCache
+            invalidateUserSummaryCache: invalidateUserSummaryCache,
+            invalidateBooksHttpCache: invalidateBooksHttpCache
         };
 
         function invalidateUserSummaryCache(){
@@ -28,6 +29,14 @@
                 return;
             }
             dataCache.remove("summaryData");
+        }
+
+        function invalidateBooksHttpCache(){
+            var httpCache = $cacheFactory.get("$http");
+            if(!httpCache){
+                return;
+            }
+            httpCache.remove("/books");
         }
 
         function getUserSummary(){
@@ -80,18 +89,15 @@
             logger.output("Getting all books.");
             var deferred = $q.defer();
             $timeout(function(){
-                if(getAllBooksCount++ % 10 == 9){
-                    deferred.reject("Error retrieving books.");
-                } else {
-                    deferred.notify("Please wait patiently....");
-                    $timeout(function(){
-                        $http.get("/books").then(function(result){
-                            deferred.resolve(result["data"]);
-                        }).catch(function(error){
-                            deferred.reject(error);
-                        });
-                    }, 1000);
-                }
+                deferred.notify("Please wait patiently....");
+                $timeout(function(){
+                    $http.get("/books", {cache:true}).then(function(result){
+                        deferred.resolve(result["data"]);
+                    }).catch(function(error){
+                        deferred.reject(error);
+                    });
+                }, 500);
+
             }, 1000);
 
             return deferred.promise;

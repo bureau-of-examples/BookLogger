@@ -69,7 +69,9 @@
             return [400, {status: "Error"}];
         });
 
-        $httpBackend.whenGET("/books").respond(booksArray);
+        $httpBackend.whenGET("/books").respond(function(){
+            return [200, booksArray];
+        });
 
         $httpBackend.whenGET("/readers").respond(readersArray);
 
