@@ -1,9 +1,9 @@
 (function () {
     "use strict";
 
-    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", "$scope", "$route", BooksController]);
+    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", "$scope", "$route", "statisticsService", BooksController]);
 
-    function BooksController(dataService, logger, badgeService, $scope, $route) {
+    function BooksController(dataService, logger, badgeService, $scope, $route, statisticsService) {
 
         var vm = this;
 
@@ -65,6 +65,8 @@
                     alert(reason);
                 });
         };
+
+        vm.cancelCount = statisticsService.getCancel();
 
         logger.output("BooksController has been created.");
     }

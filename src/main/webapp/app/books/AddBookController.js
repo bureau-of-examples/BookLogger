@@ -1,9 +1,9 @@
 (function(){
     "use strict";
 
-    angular.module("app").controller("AddBookController", ["dataService", "$location", addBookController]);
+    angular.module("app").controller("AddBookController", ["dataService", "$location", "statisticsService", addBookController]);
 
-    function addBookController(dataService, $location){
+    function addBookController(dataService, $location, statisticsService){
 
         var vm = this;
 
@@ -17,6 +17,7 @@
             });
         }
 
+        vm.incrementCancel = statisticsService.incrementCancel;
 
     }
 }());
