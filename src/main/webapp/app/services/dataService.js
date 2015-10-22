@@ -3,7 +3,7 @@
 
     angular.module("app").factory("dataService", dataServiceFactory);
 
-    function dataServiceFactory(logger, $q, $timeout, $http) {
+    function dataServiceFactory(logger, $q, $timeout, $http, $cacheFactory) {
 
         logger.output("Creating the dataService instance.");
 
@@ -17,8 +17,55 @@
             addBook: addBook,
             saveBook: saveBook,
             deleteBook: deleteBook,
-            reportError: reportError
+            reportError: reportError,
+            getUserSummary: getUserSummary,
+            invalidateUserSummaryCache: invalidateUserSummaryCache
         };
+
+        function invalidateUserSummaryCache(){
+            var dataCache = $cacheFactory.get("bookLoggerCache");
+            if(!dataCache){
+                return;
+            }
+            dataCache.remove("summaryData");
+        }
+
+        function getUserSummary(){
+            var deferred = $q.defer();
+
+            var dataCache = $cacheFactory.get("bookLoggerCache");
+            if(!dataCache){
+                dataCache = $cacheFactory("bookLoggerCache");
+            }
+            var cachedSummary = dataCache.get("summaryData");
+            if(cachedSummary) {
+                deferred.resolve(cachedSummary);
+
+            } else {
+                logger.output("Calculating total minutes read...");
+
+                $q.all([getAllBooks(), getAllReaders()]).then(function(responses){
+
+                    var totalMinutesRead = 0;
+                    for(var i=0; i<responses[1].length; i++){
+                        totalMinutesRead += responses[1][i].totalMinutesRead;
+                    }
+
+                    var summaryData = {
+                        bookCount : responses[0].length,
+                        readerCount : responses[1].length,
+                        grandTotalMinutes: totalMinutesRead
+                    };
+
+                    deferred.resolve(summaryData);
+                    dataCache.put("summaryData", summaryData);
+                }).catch(function(reason){
+                    deferred.reject(reason);
+                });
+            }
+
+            return deferred.promise;
+        }
 
         function reportError(obj){
             if(obj["status"]){
@@ -33,7 +80,7 @@
             logger.output("Getting all books.");
             var deferred = $q.defer();
             $timeout(function(){
-                if(getAllBooksCount++ % 4 == 3){
+                if(getAllBooksCount++ % 10 == 9){
                     deferred.reject("Error retrieving books.");
                 } else {
                     deferred.notify("Please wait patiently....");
@@ -55,7 +102,7 @@
             logger.output("Getting all readers.");
             var deferred = $q.defer();
             $timeout(function(){
-                if(getAllReadersCount++ % 5 == 4){
+                if(getAllReadersCount++ % 15 == 14){
                     deferred.reject("Error retrieving readers.");
                 } else {
                     $http.get("/readers", {
@@ -103,5 +150,5 @@
         }
     }
 
-    dataServiceFactory.$inject = ["logger", "$q", "$timeout", "$http"];
+    dataServiceFactory.$inject = ["logger", "$q", "$timeout", "$http", "$cacheFactory"];
 }());

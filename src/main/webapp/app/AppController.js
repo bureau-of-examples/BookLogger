@@ -27,7 +27,6 @@
             vm.lastEdited = newValue;
         });
 
-
     }
 
 }());

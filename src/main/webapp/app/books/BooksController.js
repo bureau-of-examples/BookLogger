@@ -1,9 +1,9 @@
 (function () {
     "use strict";
 
-    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", BooksController]);
+    angular.module("app").controller("BooksController", ["dataService", "logger", "badgeService", "$scope", BooksController]);
 
-    function BooksController(dataService, logger, badgeService) {
+    function BooksController(dataService, logger, badgeService, $scope) {
 
         var vm = this;
 
@@ -24,6 +24,11 @@
         }
 
         dataService.getAllReaders().then(getReadersSuccess).catch(getReadersError).finally(getAllReadersComplete);//catch handler can also handle exceptions thrown from the success handler.
+
+        dataService.getUserSummary().then(function(result){
+            vm.summaryData = result;
+            $scope.$digest();
+        });
 
         function getReadersSuccess(array) {
             if (Math.random() * 100 >= 1) {
@@ -49,6 +54,7 @@
 
             dataService.deleteBook(bookId)
                 .then(function(){
+                    dataService.invalidateUserSummaryCache();
                     return dataService.getAllBooks().then(getBooksSuccess, getBooksError, getBooksNotification);
                 })
                 .catch(function(reason){

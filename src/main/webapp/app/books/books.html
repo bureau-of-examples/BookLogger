@@ -1,5 +1,12 @@
+
+
 <div class="panel panel-default">
     <div class="panel-body">
+        <div class="alert alert-info ng-cloak">
+
+            {{vm.summaryData.bookCount}} Books - {{vm.summaryData.readerCount}} Readers - Total {{vm.summaryData.grandTotalMinutes}} Minutes Read
+        </div>
+
         <h3>All Books (programmed to fail every 4 requests)</h3>
         <div>
             <ul class="list-group">

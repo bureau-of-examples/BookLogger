@@ -9,6 +9,7 @@
 
         vm.addBook = function(book){
             dataService.addBook(book).then(function(){
+                dataService.invalidateUserSummaryCache();
                 $location.url("/");
             }).catch(function(reason){
                 dataService.reportError(reason);
