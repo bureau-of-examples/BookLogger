@@ -29,11 +29,11 @@
 
     }
 
-    app.config(["booksProvider", "constants", "dataServiceProvider", "$httpProvider", configApp]);
+    app.config(["booksProvider", "constants", "dataServiceProvider", "$httpProvider", "$provide", configApp]);
 
     app.config(["$routeProvider", configRoute]);
 
-    function configApp(booksProvider, constants, dataServiceProvider, $httpProvider){
+    function configApp(booksProvider, constants, dataServiceProvider, $httpProvider, $provide){
         console.log("Configuring " + constants.APP_TITLE);
         booksProvider.setIncludeVersionInAppName(true);
 
@@ -41,6 +41,20 @@
 
         console.log("at config phase all providers are ready for access:")
         console.log(dataServiceProvider.$get);
+
+        $provide.decorator("$log", ["$delegate", "books", logDecorator]);
+
+        function logDecorator($delegate, books){
+
+            function Creator(){
+                this.log = function log(){
+                    arguments[0] = "[" + books.appName + "]" + arguments[0];
+                    $delegate.log.apply($delegate, arguments);
+                };
+            }
+            Creator.prototype = $delegate;
+            return new Creator();
+        }
     }
 
     function configRoute($routeProvider) {
